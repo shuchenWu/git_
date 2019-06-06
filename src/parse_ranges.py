@@ -2,6 +2,7 @@ import re
 
 
 def parse_ranges(string):
+    """takes a string ,eg: '1-5, 20, 30->exit'"""
     p = re.compile(r'(?P<start>\d+)-?(?P<end>\d+)?')
     match = re.finditer(p, string)
     ls = list()
