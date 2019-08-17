@@ -11,8 +11,8 @@ from email.header import Header
 
 
 URL = 'https://learning.oreilly.com/live-training/'
-sender_email = 'shuchen.wu2@gmail.com'
-receiver_email = 'shuchen.wu2+xihuanni@gmail.com'
+sender_email = 'you@gmail.com'
+receiver_email = 'you+xihuanni@gmail.com'
 blacklist = {'agile', 'leader', 'successful', 'writing'}
 
 r = requests.get(URL)
@@ -49,7 +49,7 @@ def send_email():
         server.starttls()
         server.ehlo()
 
-        server.login('shuchen.wu2@gmail.com', 'FW9jRM9nyYkh3')
+        server.login('you@gmail.com', 'password')
 
         subject = 'New courses you might be interested in'
         body = '\n'.join((key[:-13] + ': ' + value for key, value in new_courses.items()))
