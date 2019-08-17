@@ -11,17 +11,17 @@ from email.header import Header
 
 
 URL = 'https://learning.oreilly.com/live-training/'
-sender_email = 'you@gmail.com'
-receiver_email = 'you+xihuanni@gmail.com'
-blacklist = {'agile', 'leader', 'successful'}
+sender_email = 'shuchen.wu2@gmail.com'
+receiver_email = 'shuchen.wu2+xihuanni@gmail.com'
+blacklist = {'agile', 'leader', 'successful', 'writing'}
 
 r = requests.get(URL)
 soup = BeautifulSoup(r.content, 'html.parser')
 ip_prefix = 'https://learning.oreilly.com'
-datetime_courses = (t.get('datetime')[:-9] for t in soup.find_all('time'))
-names_courses = (soup.find_all('div', {'class': 'title t-title'}))
-all_courses = {item.get_text().strip().lower() + ' ' + t: ip_prefix + item.a.get('href')
-               for t, item in zip(datetime_courses, names_courses)}
+courses_info = (soup.find_all('div', {'class': 'title t-title'}))
+course_id = lambda x: x.a.get('href')[-14:-1]
+all_courses = {item.get_text().strip().lower() + ' ' + course_id(item): ip_prefix + item.a.get('href')
+               for item in courses_info}
 selected_courses = {course: url for course, url in all_courses.items()
                     if not any((topic in course for topic in blacklist))}
 
@@ -49,10 +49,10 @@ def send_email():
         server.starttls()
         server.ehlo()
 
-        server.login('you@gmail.com', 'password')
+        server.login('shuchen.wu2@gmail.com', 'FW9jRM9nyYkh3')
 
         subject = 'New courses you might be interested in'
-        body = '\n'.join((key + ':' + value for key, value in new_courses.items()))
+        body = '\n'.join((key[:-13] + ': ' + value for key, value in new_courses.items()))
 
         msg = MIMEText(body)
         msg['Subject'] = Header(subject)
